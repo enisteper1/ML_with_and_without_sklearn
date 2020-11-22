@@ -56,6 +56,18 @@ class Linear_Regression:
         y = self.theta_1 + x * self.theta_2
         return y
 
+    def accuracy(self, output_predicted, output_true):
+        # Turn rows to columns
+        output_true = output_true[:, np.newaxis]
+        # get numerator to squeeze values between 0 to 1
+        numerator = np.sum(((output_true - output_predicted) ** 2), axis=0, dtype=np.float64)
+        # get denominator to squeeze values between 0 to 1
+        denominator = np.sum(((output_true - np.average(
+            output_true, axis=0)) ** 2), axis=0, dtype=np.float64)
+        # Get mean of 1 - squeezed error value
+        accuracy = np.mean(1 - np.mean(numerator)/np.mean(denominator))
+
+        return accuracy
 
 def dataset_preprocessing(csv_file="Breast_cancer_data.csv"):
     # Reading csv file
@@ -78,11 +90,14 @@ if __name__ == "__main__":
     x_train, y_train, x_test, y_test = x[:-test_size], y[:-test_size], x[-test_size:], y[-test_size:]
     # fitting data with selected iteration number and learning rate
     lin_reg.fit(x_train, y_train, iteration_num=10000, learning_rate=1E-2)
-    # Predict the line
-    predict = lin_reg.prediction(x_test)
+    # Used all the data with the aim of getting continuous line on plot
+    predict = lin_reg.prediction(x)
     plt.plot(x, y, "o")
-    plt.plot(x_test, predict)
+    plt.plot(x, predict)
     plt.grid()
     plt.show()
-
+    # Prediction of test values
+    test_prediction = lin_reg.prediction(x_test)
+    score = lin_reg.accuracy(test_prediction, y_test)
+    print(f"Accuracy is  {score}%")
 
