@@ -22,13 +22,16 @@ def main():
     # Fit with train data
     lin_reg.fit(x_train,y_train)
     # Predict the test data
-    predicted_y = lin_reg.predict(x_test)
+    predicted_y = lin_reg.predict(x)
     # Plot true points
     plt.plot(x, y, "o")
     # Plot predicted line
-    plt.plot(x_test, predicted_y)
+    plt.plot(x, predicted_y)
     plt.grid()
     plt.show()
+
+    score = lin_reg.score(x_test, y_test)
+    print(f"Accuracy is  {score}%")
 
 
 if __name__ == "__main__":
