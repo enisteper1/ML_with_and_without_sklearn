@@ -21,6 +21,7 @@ def main():
     predicted_y = linear_regression.predict(polynomial_regression.fit_transform(x))
     plt.scatter(x, y, color='black')
     plt.plot(x, predicted_y, color='red',linewidth=3)
+    plt.title("Degree: 4")
     plt.grid()
     plt.show()
 

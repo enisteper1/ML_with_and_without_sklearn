@@ -52,7 +52,7 @@ class KMeans:
 
         for point in self.centroid_list:
             ax.scatter(point[0],point[1], marker="x", color='black', linewidth=2)
-
+        plt.title(f"Cluster Num: {len(self.cluster_list)}")
         plt.show()
 
 
@@ -64,7 +64,14 @@ class KMeans:
         distance = sqrt(distance)
 
         return distance
-
+        
+    def calculate_inertia(self):
+        dist_sum = np.zeros((len(self.cluster_list)))
+        for i, _cluster in enumerate(self.cluster_list):
+            for point in _cluster:
+                dist_sum[i] += min((point - np.mean(_cluster,axis=0))**2)
+                
+        return np.sum(dist_sum)
 
 def dataset_preprocessing(csv_file="Breast_cancer_data.csv"):
     # Reading csv file
@@ -80,6 +87,14 @@ def dataset_preprocessing(csv_file="Breast_cancer_data.csv"):
 
 if __name__ == "__main__":
     x, y = dataset_preprocessing("KMEANS_Data.csv")
-    kmeans = KMeans(cluster_num=3)
-    kmeans.fit(x,500)
+    inertia_list = list()
+    for kn in range(2,6):
+        kmeans = KMeans(cluster_num=kn)
+        kmeans.fit(x,500)
+        inertia = kmeans.calculate_inertia()
+        inertia_list.append(inertia)
+    interval = [k for k in range(2, 2 + len(inertia_list))]
+    plt.plot(interval, inertia_list, color="blue")
+    plt.ylabel("Inertia")
+    plt.xlabel("Cluster Num")
     plt.show()

@@ -102,6 +102,7 @@ if __name__ == "__main__":
     predict = polynomial_regression.prediction(x_new)
     plt.plot(x, y, "o", color="black")
     plt.plot(x, predict, color="red", linewidth=3)
+    plt.title("Degree: 4")
     plt.grid()
     plt.show()
     # Prediction of test values
